@@ -45,7 +45,7 @@ spec:
         operator: "Exists"
         effect: "NoSchedule"
       nodeSelector:
-      - provisionerType: "cluster-autoscaler"
+        provisionerType: "cluster-autoscaler"
       containers:
       - name: server
         securityContext:
@@ -118,7 +118,7 @@ spec:
         operator: "Exists"
         effect: "NoSchedule"
       nodeSelector:
-      - provisionerType: "cluster-autoscaler"
+        provisionerType: "cluster-autoscaler"
       containers:
         - name: server
           securityContext:
@@ -200,7 +200,7 @@ spec:
         operator: "Exists"
         effect: "NoSchedule"
       nodeSelector:
-      - provisionerType: "cluster-autoscaler"
+        provisionerType: "cluster-autoscaler"
       containers:
       - name: server
         securityContext:
@@ -277,7 +277,7 @@ spec:
         operator: "Exists"
         effect: "NoSchedule"
       nodeSelector:
-      - provisionerType: "cluster-autoscaler"
+        provisionerType: "cluster-autoscaler"
       containers:
         - name: server
           securityContext:
@@ -398,7 +398,7 @@ spec:
         operator: "Exists"
         effect: "NoSchedule"
       nodeSelector:
-      - provisionerType: "cluster-autoscaler"
+        provisionerType: "cluster-autoscaler"
       containers:
       - name: server
         securityContext:
@@ -470,7 +470,7 @@ spec:
         operator: "Exists"
         effect: "NoSchedule"
       nodeSelector:
-      - provisionerType: "cluster-autoscaler"
+        provisionerType: "cluster-autoscaler"
       containers:
       - name: server
         securityContext:
@@ -542,7 +542,7 @@ spec:
         operator: "Exists"
         effect: "NoSchedule"
       nodeSelector:
-      - provisionerType: "cluster-autoscaler"
+        provisionerType: "cluster-autoscaler"
       containers:
       - name: server
         securityContext:
@@ -686,7 +686,7 @@ spec:
         operator: "Exists"
         effect: "NoSchedule"
       nodeSelector:
-      - provisionerType: "cluster-autoscaler"
+        provisionerType: "cluster-autoscaler"
       containers:
       - name: server
         securityContext:
@@ -758,7 +758,7 @@ spec:
         operator: "Exists"
         effect: "NoSchedule"
       nodeSelector:
-      - provisionerType: "cluster-autoscaler"
+        provisionerType: "cluster-autoscaler"
       containers:
       - name: server
         securityContext:
@@ -829,7 +829,7 @@ spec:
         operator: "Exists"
         effect: "NoSchedule"
       nodeSelector:
-      - provisionerType: "cluster-autoscaler"
+        provisionerType: "cluster-autoscaler"
       containers:
       - name: redis
         securityContext:
@@ -904,7 +904,7 @@ spec:
         operator: "Exists"
         effect: "NoSchedule"
       nodeSelector:
-      - provisionerType: "cluster-autoscaler"
+        provisionerType: "cluster-autoscaler"
       containers:
       - name: server
         securityContext:
