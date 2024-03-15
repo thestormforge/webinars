@@ -1,7 +1,0 @@
-clusterName: demo-20240328
-stormforge:
-  address: https://api.stormforge.io/
-authorization:
-  issuer: https://api.stormforge.io/
-  clientID: 19f827afdf074fb9a29b707e7ddcbc29
-  clientSecret: vYk..0a4EYP_Rf.yzmEGA97nYq
