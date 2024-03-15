@@ -40,3 +40,52 @@ webinar.
 
 - Karpenter is much better than CAS
 - Bit Karpenter still depends on Kubernetes Requests, StormForge will configure it for you
+
+## Provision Environment
+
+Add your StormForge credentials into `eks.tf`
+
+```hcl
+stormforge = {
+      name = "stormforge-agent"
+      description = "StormForge agent"
+      repository = "oci://registry.stormforge.io/library/"
+      chart = "stormforge-agent"
+      create_namespace = true
+      namespace = "stormforge-system"
+      values = [
+        <<-EOT
+          clusterName: ${module.eks.cluster_name}
+          stormforge:
+            address: https://api.stormforge.io/
+          authorization:
+            issuer: https://api.stormforge.io/
+            clientID: ADD YOUR CLIENT ID HERE
+            clientSecret: ADD YOUR CLIENT SECRET HERE
+        EOT
+      ]
+    }
+```
+
+Change other desired values in `locals` of `main.tf` file:
+
+```hcl
+locals {
+  name   = "stormforge-demo"
+  region = "us-west-2" # Change to your desired region
+
+  vpc_cidr = "10.1.0.0/16"
+  azs      = slice(data.aws_availability_zones.available.names, 0, 3)
+
+  tags = {
+    Blueprint  = local.name
+    GithubRepo = "github.com/aws-ia/terraform-aws-eks-blueprints"
+  }
+}
+```
+
+Apply terraform:
+
+```bash
+terraform init && terraform apply --auto-approve
+```
