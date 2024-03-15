@@ -16,14 +16,14 @@ apiVersion: v1
 kind: Namespace
 metadata:
   labels:
-    kubernetes.io/metadata.name: sampleapp-on-cas
-  name: sampleapp-on-cas
+    kubernetes.io/metadata.name: sampleapp-on-karpenter
+  name: sampleapp-on-karpenter
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: emailservice
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   selector:
     matchLabels:
@@ -41,11 +41,11 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
       tolerations:
-      - key: "cluster-autoscaler"
-        operator: "Exists"
-        effect: "NoSchedule"
+        - key: karpenter
+          operator: "Exists"
+          effect: "NoSchedule"
       nodeSelector:
-        provisionerType: "cluster-autoscaler"
+        provisionerType: "karpenter"
       containers:
       - name: server
         securityContext:
@@ -83,7 +83,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: emailservice
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   type: ClusterIP
   selector:
@@ -97,7 +97,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: checkoutservice
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   selector:
     matchLabels:
@@ -114,11 +114,11 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
       tolerations:
-      - key: "cluster-autoscaler"
-        operator: "Exists"
-        effect: "NoSchedule"
+        - key: karpenter
+          operator: "Exists"
+          effect: "NoSchedule"
       nodeSelector:
-        provisionerType: "cluster-autoscaler"
+        provisionerType: "karpenter"
       containers:
         - name: server
           securityContext:
@@ -164,7 +164,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: checkoutservice
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   type: ClusterIP
   selector:
@@ -178,7 +178,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: recommendationservice
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   selector:
     matchLabels:
@@ -196,11 +196,11 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
       tolerations:
-      - key: "cluster-autoscaler"
-        operator: "Exists"
-        effect: "NoSchedule"
+        - key: karpenter
+          operator: "Exists"
+          effect: "NoSchedule"
       nodeSelector:
-        provisionerType: "cluster-autoscaler"
+        provisionerType: "karpenter"
       containers:
       - name: server
         securityContext:
@@ -240,7 +240,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: recommendationservice
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   type: ClusterIP
   selector:
@@ -254,7 +254,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   selector:
     matchLabels:
@@ -273,11 +273,11 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
       tolerations:
-      - key: "cluster-autoscaler"
-        operator: "Exists"
-        effect: "NoSchedule"
+        - key: karpenter
+          operator: "Exists"
+          effect: "NoSchedule"
       nodeSelector:
-        provisionerType: "cluster-autoscaler"
+        provisionerType: "karpenter"
       containers:
         - name: server
           securityContext:
@@ -348,7 +348,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: frontend
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   type: ClusterIP
   selector:
@@ -362,7 +362,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: frontend-external
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   type: LoadBalancer
   selector:
@@ -376,7 +376,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: paymentservice
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   selector:
     matchLabels:
@@ -394,11 +394,11 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
       tolerations:
-      - key: "cluster-autoscaler"
-        operator: "Exists"
-        effect: "NoSchedule"
+        - key: karpenter
+          operator: "Exists"
+          effect: "NoSchedule"
       nodeSelector:
-        provisionerType: "cluster-autoscaler"
+        provisionerType: "karpenter"
       containers:
       - name: server
         securityContext:
@@ -434,7 +434,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: paymentservice
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   type: ClusterIP
   selector:
@@ -448,7 +448,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: productcatalogservice
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   selector:
     matchLabels:
@@ -466,11 +466,11 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
       tolerations:
-      - key: "cluster-autoscaler"
+      - key: karpenter
         operator: "Exists"
         effect: "NoSchedule"
       nodeSelector:
-        provisionerType: "cluster-autoscaler"
+        provisionerType: "karpenter"
       containers:
       - name: server
         securityContext:
@@ -506,7 +506,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: productcatalogservice
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   type: ClusterIP
   selector:
@@ -520,7 +520,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cartservice
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   selector:
     matchLabels:
@@ -538,11 +538,11 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
       tolerations:
-      - key: "cluster-autoscaler"
+      - key: karpenter
         operator: "Exists"
         effect: "NoSchedule"
       nodeSelector:
-        provisionerType: "cluster-autoscaler"
+        provisionerType: "karpenter"
       containers:
       - name: server
         securityContext:
@@ -579,7 +579,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: cartservice
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   type: ClusterIP
   selector:
@@ -593,7 +593,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: loadgenerator
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   selector:
     matchLabels:
@@ -651,7 +651,7 @@ spec:
         - name: FRONTEND_ADDR
           value: "frontend:80"
         - name: USERS
-          value: "10"
+          value: "100000"
         resources:
           requests:
             cpu: 600m
@@ -664,7 +664,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: currencyservice
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   selector:
     matchLabels:
@@ -682,11 +682,11 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
       tolerations:
-      - key: "cluster-autoscaler"
-        operator: "Exists"
-        effect: "NoSchedule"
+        - key: karpenter
+          operator: "Exists"
+          effect: "NoSchedule"
       nodeSelector:
-        provisionerType: "cluster-autoscaler"
+        provisionerType: "karpenter"
       containers:
       - name: server
         securityContext:
@@ -723,7 +723,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: currencyservice
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   type: ClusterIP
   selector:
@@ -737,7 +737,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: shippingservice
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   selector:
     matchLabels:
@@ -754,11 +754,11 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
       tolerations:
-      - key: "cluster-autoscaler"
-        operator: "Exists"
-        effect: "NoSchedule"
+        - key: karpenter
+          operator: "Exists"
+          effect: "NoSchedule"
       nodeSelector:
-        provisionerType: "cluster-autoscaler"
+        provisionerType: "karpenter"
       containers:
       - name: server
         securityContext:
@@ -795,7 +795,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: shippingservice
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   type: ClusterIP
   selector:
@@ -809,7 +809,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis-cart
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   selector:
     matchLabels:
@@ -825,11 +825,11 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
       tolerations:
-      - key: "cluster-autoscaler"
-        operator: "Exists"
-        effect: "NoSchedule"
+        - key: karpenter
+          operator: "Exists"
+          effect: "NoSchedule"
       nodeSelector:
-        provisionerType: "cluster-autoscaler"
+        provisionerType: "karpenter"
       containers:
       - name: redis
         securityContext:
@@ -868,7 +868,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: redis-cart
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   type: ClusterIP
   selector:
@@ -882,7 +882,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: adservice
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   selector:
     matchLabels:
@@ -900,11 +900,11 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
       tolerations:
-      - key: "cluster-autoscaler"
-        operator: "Exists"
-        effect: "NoSchedule"
+        - key: karpenter
+          operator: "Exists"
+          effect: "NoSchedule"
       nodeSelector:
-        provisionerType: "cluster-autoscaler"
+        provisionerType: "karpenter"
       containers:
       - name: server
         securityContext:
@@ -942,7 +942,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: adservice
-  namespace: sampleapp-on-cas
+  namespace: sampleapp-on-karpenter
 spec:
   type: ClusterIP
   selector:
@@ -951,3 +951,204 @@ spec:
   - name: grpc
     port: 9555
     targetPort: 9555
+---
+# HPA
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: emailservice-hpa
+  namespace: sampleapp-on-karpenter
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: emailservice
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 40
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: checkoutservice-hpa
+  namespace: sampleapp-on-karpenter
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: checkoutservice
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 40
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: recommendationservice-hpa
+  namespace: sampleapp-on-karpenter
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: recommendationservice
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 40
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: frontend-hpa
+  namespace: sampleapp-on-karpenter
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: frontend
+  minReplicas: 1
+  maxReplicas: 30
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 40
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: paymentservice-hpa
+  namespace: sampleapp-on-karpenter
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: paymentservice
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 40
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: productcatalogservice-hpa
+  namespace: sampleapp-on-karpenter
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: productcatalogservice
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 40
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: cartservice-hpa
+  namespace: sampleapp-on-karpenter
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cartservice
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 40
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: currencyservice-hpa
+  namespace: sampleapp-on-karpenter
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: currencyservice
+  minReplicas: 1
+  maxReplicas: 50
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 40
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: shippingservice-hpa
+  namespace: sampleapp-on-karpenter
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: shippingservice
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 40
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: adservice-hpa
+  namespace: sampleapp-on-karpenter
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: adservice
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 40
