@@ -30,7 +30,6 @@ module "eks" {
     },
   ]
 
-
   eks_managed_node_groups = {
     cluster_autoscaler = {
       instance_types = ["m5.large"]
@@ -43,19 +42,12 @@ module "eks" {
         GithubRepo      = "example.git.com"
       }
 
-      taints = {
-        dedicated = {
-          key    = "cluster-autoscaler"
-          value  = "EXISTS"
-          effect = "NO_SCHEDULE"
-        }
-      }
     }
 
     infra_node_group = {
       instance_types = ["m5.large"]
       min_size       = 3
-      max_size       = 3
+      max_size       = 5
       desired_size   = 3
 
       labels = {
@@ -128,6 +120,55 @@ module "eks_blueprints_addons" {
         EOT
       ]
     }
+
+    stormforge-loadgen-karpenter = {
+      name = "stormforge-loadgen-karpenter"
+      description = "StormForge Load Gen Hipster App"
+      repository = "https://registry.stormforge.io/chartrepo/examples"
+      chart = "stormforge-examples/sf-hipster-shop-loadgenerator"
+      create_namespace = true
+      namespace = "sampleapp-on-karpenter"
+      values = [
+        "${file("./helm-values/load-gen.yaml")}"
+      ]
+    }
+
+    stormforge-loadgen-cas = {
+      name = "stormforge-loadgen-cas"
+      description = "StormForge Load Gen Hipster App"
+      repository = "https://registry.stormforge.io/chartrepo/examples"
+      chart = "stormforge-examples/sf-hipster-shop-loadgenerator"
+      create_namespace = true
+      namespace = "sampleapp-on-cas"
+      values = [
+        "${file("./helm-values/load-gen.yaml")}"
+      ]
+    }
+
+    stormforge-hipsterapp-karpenter = {
+      name = "stormforge-hipsterapp-karpenter"
+      description = "StormForge Hipster App"
+      repository = "https://registry.stormforge.io/chartrepo/examples"
+      chart = "stormforge-examples/sf-hipster-shop"
+      create_namespace = true
+      namespace = "sampleapp-on-karpenter"
+      values = [
+        "${file("./helm-values/inflate-app-karpenter.yaml")}"
+      ]
+    }
+
+    stormforge-hipsterapp-cas = {
+      name = "stormforge-hipsterapp-cas"
+      description = "StormForge Hipster App"
+      repository = "https://registry.stormforge.io/chartrepo/examples"
+      chart = "stormforge-examples/sf-hipster-shop"
+      create_namespace = true
+      namespace = "sampleapp-on-cas"
+      values = [
+        "${file("./helm-values/inflate-app-cas.yaml")}"
+      ]
+    }
+
   }
 
   tags = local.tags
@@ -164,10 +205,6 @@ module "eks_data_addons" {
       nodePool:
         labels:
           - provisionerType: karpenter
-        taints:
-          - key: karpenter
-            value: "Exists"
-            effect: "NoSchedule"
         requirements:
           - key: "karpenter.k8s.aws/instance-category"
             operator: In
