@@ -125,7 +125,7 @@ module "eks_blueprints_addons" {
       name = "stormforge-loadgen-karpenter"
       description = "StormForge Load Gen Hipster App"
       repository = "https://registry.stormforge.io/chartrepo/examples"
-      chart = "stormforge-examples/sf-hipster-shop-loadgenerator"
+      chart = "sf-hipster-shop-loadgenerator"
       create_namespace = true
       namespace = "sampleapp-on-karpenter"
       values = [
@@ -137,7 +137,7 @@ module "eks_blueprints_addons" {
       name = "stormforge-loadgen-cas"
       description = "StormForge Load Gen Hipster App"
       repository = "https://registry.stormforge.io/chartrepo/examples"
-      chart = "stormforge-examples/sf-hipster-shop-loadgenerator"
+      chart = "sf-hipster-shop-loadgenerator"
       create_namespace = true
       namespace = "sampleapp-on-cas"
       values = [
@@ -149,7 +149,7 @@ module "eks_blueprints_addons" {
       name = "stormforge-hipsterapp-karpenter"
       description = "StormForge Hipster App"
       repository = "https://registry.stormforge.io/chartrepo/examples"
-      chart = "stormforge-examples/sf-hipster-shop"
+      chart = "sf-hipster-shop"
       create_namespace = true
       namespace = "sampleapp-on-karpenter"
       values = [
@@ -161,7 +161,7 @@ module "eks_blueprints_addons" {
       name = "stormforge-hipsterapp-cas"
       description = "StormForge Hipster App"
       repository = "https://registry.stormforge.io/chartrepo/examples"
-      chart = "stormforge-examples/sf-hipster-shop"
+      chart = "sf-hipster-shop"
       create_namespace = true
       namespace = "sampleapp-on-cas"
       values = [
