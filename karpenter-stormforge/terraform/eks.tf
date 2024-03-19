@@ -199,8 +199,8 @@ module "eks_blueprints_addons" {
 }
 
 module "eks_data_addons" {
-  source = "github.com/lusoal/terraform-aws-eks-data-addons?ref=8b612dfcd6e1c4255ed3053db22ab2a633da45a0"
-  # version = "~> 1.30" # ensure to update this to the latest/desired version
+  source = "aws-ia/eks-data-addons/aws"
+  version = "~> 1.31.3" # ensure to update this to the latest/desired version
 
   oidc_provider_arn = module.eks.oidc_provider_arn
   #---------------------------------------
