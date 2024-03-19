@@ -117,6 +117,7 @@ module "eks_blueprints_addons" {
             issuer: https://api.stormforge.io/
             clientID: ${var.stormforge_client_id}
             clientSecret: ${var.stormforge_client_secret}
+          clusterData: true
         EOT
       ]
     }
