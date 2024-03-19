@@ -305,7 +305,7 @@ module "eks_data_addons" {
             values: ["amd64"]
           - key: "karpenter.sh/capacity-type"
             operator: In
-            values: ["on-demand", "on-spot"]
+            values: ["spot"]
         limits:
           cpu: 1000
         disruption:
