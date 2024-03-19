@@ -6,7 +6,8 @@ data "aws_availability_zones" "available" {}
 
 locals {
   name   = "stormforge-demo"
-  region = "us-west-2"
+  region = "us-east-1"
+  cluster_version = "1.29"
 
   vpc_cidr = "10.1.0.0/16"
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
