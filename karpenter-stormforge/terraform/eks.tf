@@ -7,7 +7,7 @@ module "eks" {
   version = "~> 19.21"
 
   cluster_name                   = local.name
-  cluster_version                = "1.29"
+  cluster_version                = local.cluster_version
   cluster_endpoint_public_access = true
 
   vpc_id     = module.vpc.vpc_id
@@ -115,8 +115,8 @@ module "eks_blueprints_addons" {
             address: https://api.stormforge.io/
           authorization:
             issuer: https://api.stormforge.io/
-            clientID:
-            clientSecret:
+            clientID: ${var.stormforge_client_id}
+            clientSecret: ${var.stormforge_client_secret}
         EOT
       ]
     }
@@ -217,7 +217,7 @@ module "eks_data_addons" {
             values: ["amd64"]
           - key: "karpenter.sh/capacity-type"
             operator: In
-            values: ["spot", "on-demand"]
+            values: ["on-demand"]
         limits:
           cpu: 1000
         disruption:
