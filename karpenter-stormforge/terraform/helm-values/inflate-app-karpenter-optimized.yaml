@@ -1,0 +1,25 @@
+# Default values for sf-hipster-shop.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+frontendAddr: frontend:80
+
+nodeSelector:
+  provisionerType: "karpenter-optimized"
+
+enableAutoscaling: true
+
+openshift: false
+
+# The following require trailing slashes
+containerRegistry: gcr.io/google-samples/microservices-demo/
+
+# redisRegistry:
+
+resources:
+  requests:
+    cpu: 1
+    memory: 2000Mi
+  limits:
+    cpu: 1250m
+    memory: 2400Mi

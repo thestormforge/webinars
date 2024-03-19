@@ -168,6 +168,30 @@ module "eks_blueprints_addons" {
         "${file("./helm-values/inflate-app-cas.yaml")}"
       ]
     }
+  
+  stormforge-loadgen-karpenter-optimized = {
+      name = "stormforge-loadgen-karpenter-optimized"
+      description = "StormForge Load Gen Hipster App"
+      repository = "https://registry.stormforge.io/chartrepo/examples"
+      chart = "sf-hipster-shop-loadgenerator"
+      create_namespace = true
+      namespace = "sampleapp-on-karpenter-optimized"
+      values = [
+        "${file("./helm-values/load-gen.yaml")}"
+      ]
+    }
+
+  stormforge-hipsterapp-karpenter-optimized = {
+      name = "stormforge-hipsterapp-karpenter"
+      description = "StormForge Hipster App"
+      repository = "https://registry.stormforge.io/chartrepo/examples"
+      chart = "sf-hipster-shop"
+      create_namespace = true
+      namespace = "sampleapp-on-karpenter-optimized"
+      values = [
+        "${file("./helm-values/inflate-app-karpenter-optimized.yaml")}"
+      ]
+    }
 
   }
 
@@ -222,6 +246,51 @@ module "eks_data_addons" {
           cpu: 1000
         disruption:
           consolidationPolicy: WhenEmpty
+          consolidateAfter: 30s
+          expireAfter: 720h
+        weight: 100
+      EOT
+      ]
+    }
+
+    microsservice-demo-optimized = {
+      values = [
+        <<-EOT
+      name: microsservice-demo-optimized
+      clusterName: ${module.eks.cluster_name}
+      ec2NodeClass:
+        karpenterRole: ${split("/", module.eks_blueprints_addons.karpenter.node_iam_role_arn)[1]}
+        subnetSelectorTerms:
+          id: ${module.vpc.private_subnets[2]}
+        securityGroupSelectorTerms:
+          tags:
+            karpenter.sh/discovery: ${module.eks.cluster_name}
+        blockDevice:
+          deviceName: /dev/xvda
+          volumeSize: 100Gi
+          volumeType: gp3
+          encrypted: true
+          deleteOnTermination: true
+      nodePool:
+        labels:
+          - provisionerType: karpenter-optimized
+        requirements:
+          - key: "karpenter.k8s.aws/instance-category"
+            operator: In
+            values: ["c", "m", "r"]
+          - key: "karpenter.k8s.aws/instance-size"
+            operator: In
+            values: ["large", "xlarge", "2xlarge", "4xlarge", "8xlarge", "16xlarge", "24xlarge"]
+          - key: "kubernetes.io/arch"
+            operator: In
+            values: ["amd64"]
+          - key: "karpenter.sh/capacity-type"
+            operator: In
+            values: ["on-demand", "on-spot"]
+        limits:
+          cpu: 1000
+        disruption:
+          consolidationPolicy: WhenUnderutilized
           consolidateAfter: 30s
           expireAfter: 720h
         weight: 100
