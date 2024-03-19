@@ -102,12 +102,12 @@ module "eks_blueprints_addons" {
 
   helm_releases = {
     stormforge = {
-      name = "stormforge-agent"
-      description = "StormForge agent"
-      repository = "oci://registry.stormforge.io/library/"
-      chart = "stormforge-agent"
+      name             = "stormforge-agent"
+      description      = "StormForge agent"
+      repository       = "oci://registry.stormforge.io/library/"
+      chart            = "stormforge-agent"
       create_namespace = true
-      namespace = "stormforge-system"
+      namespace        = "stormforge-system"
       values = [
         <<-EOT
           clusterName: ${module.eks.cluster_name}
@@ -122,72 +122,72 @@ module "eks_blueprints_addons" {
     }
 
     stormforge-loadgen-karpenter = {
-      name = "stormforge-loadgen-karpenter"
-      description = "StormForge Load Gen Hipster App"
-      repository = "https://registry.stormforge.io/chartrepo/examples"
-      chart = "sf-hipster-shop-loadgenerator"
+      name             = "stormforge-loadgen-karpenter"
+      description      = "StormForge Load Gen Hipster App"
+      repository       = "https://registry.stormforge.io/chartrepo/examples"
+      chart            = "sf-hipster-shop-loadgenerator"
       create_namespace = true
-      namespace = "sampleapp-on-karpenter"
+      namespace        = "sampleapp-on-karpenter"
       values = [
         "${file("./helm-values/load-gen.yaml")}"
       ]
     }
 
     stormforge-loadgen-cas = {
-      name = "stormforge-loadgen-cas"
-      description = "StormForge Load Gen Hipster App"
-      repository = "https://registry.stormforge.io/chartrepo/examples"
-      chart = "sf-hipster-shop-loadgenerator"
+      name             = "stormforge-loadgen-cas"
+      description      = "StormForge Load Gen Hipster App"
+      repository       = "https://registry.stormforge.io/chartrepo/examples"
+      chart            = "sf-hipster-shop-loadgenerator"
       create_namespace = true
-      namespace = "sampleapp-on-cas"
+      namespace        = "sampleapp-on-cas"
       values = [
         "${file("./helm-values/load-gen.yaml")}"
       ]
     }
 
     stormforge-hipsterapp-karpenter = {
-      name = "stormforge-hipsterapp-karpenter"
-      description = "StormForge Hipster App"
-      repository = "https://registry.stormforge.io/chartrepo/examples"
-      chart = "sf-hipster-shop"
+      name             = "stormforge-hipsterapp-karpenter"
+      description      = "StormForge Hipster App"
+      repository       = "https://registry.stormforge.io/chartrepo/examples"
+      chart            = "sf-hipster-shop"
       create_namespace = true
-      namespace = "sampleapp-on-karpenter"
+      namespace        = "sampleapp-on-karpenter"
       values = [
         "${file("./helm-values/inflate-app-karpenter.yaml")}"
       ]
     }
 
     stormforge-hipsterapp-cas = {
-      name = "stormforge-hipsterapp-cas"
-      description = "StormForge Hipster App"
-      repository = "https://registry.stormforge.io/chartrepo/examples"
-      chart = "sf-hipster-shop"
+      name             = "stormforge-hipsterapp-cas"
+      description      = "StormForge Hipster App"
+      repository       = "https://registry.stormforge.io/chartrepo/examples"
+      chart            = "sf-hipster-shop"
       create_namespace = true
-      namespace = "sampleapp-on-cas"
+      namespace        = "sampleapp-on-cas"
       values = [
         "${file("./helm-values/inflate-app-cas.yaml")}"
       ]
     }
-  
-  stormforge-loadgen-karpenter-optimized = {
-      name = "stormforge-loadgen-karpenter-optimized"
-      description = "StormForge Load Gen Hipster App"
-      repository = "https://registry.stormforge.io/chartrepo/examples"
-      chart = "sf-hipster-shop-loadgenerator"
+
+    stormforge-loadgen-karpenter-optimized = {
+      name             = "stormforge-loadgen-karpenter-optimized"
+      description      = "StormForge Load Gen Hipster App"
+      repository       = "https://registry.stormforge.io/chartrepo/examples"
+      chart            = "sf-hipster-shop-loadgenerator"
       create_namespace = true
-      namespace = "sampleapp-on-karpenter-optimized"
+      namespace        = "sampleapp-on-karpenter-optimized"
       values = [
         "${file("./helm-values/load-gen.yaml")}"
       ]
     }
 
-  stormforge-hipsterapp-karpenter-optimized = {
-      name = "stormforge-hipsterapp-karpenter"
-      description = "StormForge Hipster App"
-      repository = "https://registry.stormforge.io/chartrepo/examples"
-      chart = "sf-hipster-shop"
+    stormforge-hipsterapp-karpenter-optimized = {
+      name             = "stormforge-hipsterapp-karpenter"
+      description      = "StormForge Hipster App"
+      repository       = "https://registry.stormforge.io/chartrepo/examples"
+      chart            = "sf-hipster-shop"
       create_namespace = true
-      namespace = "sampleapp-on-karpenter-optimized"
+      namespace        = "sampleapp-on-karpenter-optimized"
       values = [
         "${file("./helm-values/inflate-app-karpenter-optimized.yaml")}"
       ]
@@ -199,8 +199,8 @@ module "eks_blueprints_addons" {
 }
 
 module "eks_data_addons" {
-  source  = "aws-ia/eks-data-addons/aws"
-  version = "~> 1.30" # ensure to update this to the latest/desired version
+  source = "aws-ia/eks-data-addons/aws"
+  version = "~> 1.31.3" # ensure to update this to the latest/desired version
 
   oidc_provider_arn = module.eks.oidc_provider_arn
   #---------------------------------------
@@ -291,7 +291,6 @@ module "eks_data_addons" {
           cpu: 1000
         disruption:
           consolidationPolicy: WhenUnderutilized
-          consolidateAfter: 30s
           expireAfter: 720h
         weight: 100
       EOT

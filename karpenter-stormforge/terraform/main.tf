@@ -5,8 +5,8 @@ data "aws_ecrpublic_authorization_token" "token" {
 data "aws_availability_zones" "available" {}
 
 locals {
-  name   = "stormforge-demo"
-  region = "us-east-1"
+  name            = "stormforge-demo"
+  region          = "us-east-1"
   cluster_version = "1.29"
 
   vpc_cidr = "10.1.0.0/16"
