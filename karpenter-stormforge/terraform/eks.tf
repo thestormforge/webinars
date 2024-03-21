@@ -18,6 +18,8 @@ module "eks" {
   create_node_security_group    = false
 
   manage_aws_auth_configmap = true
+  aws_auth_users            = var.aws_auth_users
+
   aws_auth_roles = [
     # We need to add in the Karpenter node IAM role for nodes launched by Karpenter
     {
@@ -212,13 +214,37 @@ module "eks_blueprints_addons" {
       ]
     }
 
+    stormforge-loadgen-karpenter-optimized-sf = {
+      name             = "loadgen-karpenter-optimized-sf"
+      description      = "StormForge Load Gen Hipster App"
+      repository       = "https://registry.stormforge.io/chartrepo/examples"
+      chart            = "sf-hipster-shop-loadgenerator"
+      create_namespace = true
+      namespace        = "sampleapp-on-karpenter-optimized-sf"
+      values = [
+        "${file("./helm-values/load-gen.yaml")}"
+      ]
+    }
+
+    stormforge-hipsterapp-karpenter-optimized-sf = {
+      name             = "hipsterapp-karpenter-optimized-sf"
+      description      = "StormForge Hipster App"
+      repository       = "https://registry.stormforge.io/chartrepo/examples"
+      chart            = "sf-hipster-shop"
+      create_namespace = true
+      namespace        = "sampleapp-on-karpenter-optimized-sf"
+      values = [
+        "${file("./helm-values/inflate-app-karpenter-optimized-sf.yaml")}"
+      ]
+    }
+
   }
 
   tags = local.tags
 }
 
 module "eks_data_addons" {
-  source = "aws-ia/eks-data-addons/aws"
+  source  = "aws-ia/eks-data-addons/aws"
   version = "~> 1.31.3" # ensure to update this to the latest/desired version
 
   oidc_provider_arn = module.eks.oidc_provider_arn
@@ -293,6 +319,50 @@ module "eks_data_addons" {
       nodePool:
         labels:
           - provisionerType: karpenter-optimized
+        requirements:
+          - key: "karpenter.k8s.aws/instance-category"
+            operator: In
+            values: ["c", "m", "r"]
+          - key: "karpenter.k8s.aws/instance-size"
+            operator: In
+            values: ["large", "xlarge", "2xlarge", "4xlarge", "8xlarge", "16xlarge", "24xlarge"]
+          - key: "kubernetes.io/arch"
+            operator: In
+            values: ["amd64"]
+          - key: "karpenter.sh/capacity-type"
+            operator: In
+            values: ["spot"]
+        limits:
+          cpu: 1000
+        disruption:
+          consolidationPolicy: WhenUnderutilized
+          expireAfter: 720h
+        weight: 100
+      EOT
+      ]
+    }
+
+    microsservice-demo-optimized-sf = {
+      values = [
+        <<-EOT
+      name: microsservice-demo-optimized-sf
+      clusterName: ${module.eks.cluster_name}
+      ec2NodeClass:
+        karpenterRole: ${split("/", module.eks_blueprints_addons.karpenter.node_iam_role_arn)[1]}
+        subnetSelectorTerms:
+          id: ${module.vpc.private_subnets[2]}
+        securityGroupSelectorTerms:
+          tags:
+            karpenter.sh/discovery: ${module.eks.cluster_name}
+        blockDevice:
+          deviceName: /dev/xvda
+          volumeSize: 100Gi
+          volumeType: gp3
+          encrypted: true
+          deleteOnTermination: true
+      nodePool:
+        labels:
+          - provisionerType: karpenter-optimized-sf
         requirements:
           - key: "karpenter.k8s.aws/instance-category"
             operator: In
