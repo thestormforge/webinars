@@ -16,6 +16,12 @@ containerRegistry: gcr.io/google-samples/microservices-demo/
 
 # redisRegistry:
 
+podAnnotations:
+  live.stormforge.io/schedule: "PT1H"
+  live.stormforge.io/auto-deploy: "true"
+  live.stormforge.io/auto-deploy.thresholds.cpu.percent: "10"
+  live.stormforge.io/auto-deploy.thresholds.memory.percent: "10"
+
 resources:
   requests:
     cpu: 1
