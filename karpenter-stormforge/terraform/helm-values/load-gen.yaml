@@ -15,3 +15,8 @@ users:
 
 nodeSelector:
   provisionerType: "infra"
+
+resources:
+  requests:
+    cpu: 500m
+    memory: 700Mi

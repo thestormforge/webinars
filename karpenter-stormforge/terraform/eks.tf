@@ -122,6 +122,24 @@ module "eks_blueprints_addons" {
       ]
     }
 
+    stormforge-applier = {
+      name             = "stormforge-applier"
+      description      = "StormForge applier"
+      repository       = "oci://registry.stormforge.io/library/"
+      chart            = "stormforge-applier"
+      create_namespace = true
+      namespace        = "stormforge-system"
+      values = [
+        <<-EOT
+          clusterName: ${module.eks.cluster_name}
+          authorization:
+            issuer: https://api.stormforge.io/
+            clientID: ${var.stormforge_client_id}
+            clientSecret: ${var.stormforge_client_secret}
+        EOT
+      ]
+    }
+
     stormforge-loadgen-karpenter = {
       name             = "stormforge-loadgen-karpenter"
       description      = "StormForge Load Gen Hipster App"
