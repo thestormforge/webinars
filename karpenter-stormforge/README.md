@@ -11,13 +11,14 @@ webinar.
 ## Baseline Environment
 
 // Perhaps a mermaid diagram here
-- (Managed?) EKS cluster with a load generator running separatly
-- [Sample application][https://github.com/GoogleCloudPlatform/microservices-demo] with the exact same configuration set on two namespaces: app-on-CAS and app-on-Karpenter
-- `app-on-CAS` uses CAS over nodelabel=CAS
--- Show the CAS node configguration , we used m5.large (2 vCPU 8 GB RAM)
-- `app-on-Karpenter` uses Karpenter over nodelabel=karpenter with minimun size `.large` 
--- nodepool category: c, r , m. spot and on-demand
+- EKS cluster with a load generator running separatly
+- [Sample application][https://github.com/GoogleCloudPlatform/microservices-demo] with the exact same configuration set on three namespaces: sampleapp-on-CAS and sampleapp-on-karpenter and sampleapp-on-karpenter-optimized
+- `sampleapp-on-CAS` uses CAS over nodelabel=cluster-autoscaler
+-- Show the CAS node configuration , we used m5.large (2 vCPU 8 GB RAM)
+- `sampleapp-on-karpenter` uses Karpenter over nodelabel=karpenter with minimum size `.large` 
+-- nodepool category: c, r , m and on-demand
 -- Explain the rationale of the node sizes: we wanted a wide range to get karpenter to pickup the best ones and spot to maximize savings.
+- `sampleapp-on-karpenter-optimized` uses Karpenter over nodelabel=karpenter-optimized with spot and compression mode 
 
 
 ## Demo 1: difference between CAS and Karpenter
@@ -28,7 +29,11 @@ webinar.
 - Both nodegroups will scale
 - Run eks-node-viewer on both of them and show the difference how they will scale
 
-## Demo 2: difference on application on Karpenter with Compression mode and after StormForge patches
+## Demo 2: difference on application on Karpenter with Compression mode
+
+- See the price difference
+
+## Demo 3: Cost savings after StormForge patches
 
 - Load StormForge UI and install StormForge agent
 - Cooking show 2:
