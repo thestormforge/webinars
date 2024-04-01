@@ -10,9 +10,8 @@ webinar.
 
 ## Baseline Environment
 
-// Perhaps a mermaid diagram here
 - EKS cluster with a load generator running separatly
-- [Sample application][https://github.com/GoogleCloudPlatform/microservices-demo] with the exact same configuration set on three namespaces: sampleapp-on-CAS and sampleapp-on-karpenter and sampleapp-on-karpenter-optimized
+- Sample application: https://github.com/GoogleCloudPlatform/microservices-demo with the exact same configuration set on three namespaces: sampleapp-on-CAS and sampleapp-on-karpenter and sampleapp-on-karpenter-optimized. We have custom helm charts to install this application along with a helm chart just for the load generator.
 - `sampleapp-on-CAS` uses CAS over nodelabel=cluster-autoscaler
 -- Show the CAS node configuration , we used m5.large (2 vCPU 8 GB RAM)
 - `sampleapp-on-karpenter` uses Karpenter over nodelabel=karpenter with minimum size `.large` 
@@ -49,7 +48,7 @@ webinar.
 
 ## Provision Environment
 
-Add your StormForge credentials into `eks.tf`
+Add your StormForge credentials into `eks.tf` . The credentials can be obtained signing up to StormForge here: https://app.stormforge.io/signup
 
 ```hcl
 stormforge = {
