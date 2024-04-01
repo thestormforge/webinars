@@ -10,7 +10,7 @@ webinar.
 
 ## Baseline Environment
 
-- EKS cluster with a load generator running separatly
+- EKS cluster with a load generator running separately
 - Sample application: https://github.com/GoogleCloudPlatform/microservices-demo with the exact same configuration set on three namespaces: sampleapp-on-CAS and sampleapp-on-karpenter and sampleapp-on-karpenter-optimized. We have custom helm charts to install this application along with a helm chart just for the load generator.
 - `sampleapp-on-CAS` uses CAS over nodelabel=cluster-autoscaler
 -- Show the CAS node configuration , we used m5.large (2 vCPU 8 GB RAM)
