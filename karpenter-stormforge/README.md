@@ -42,9 +42,9 @@ webinar.
 
 ## Conclusion
 
-- Karpenter is much better than CAS by itself
-- Karpenter with compression mode gives extra gains
-- Bit Karpenter still depends on Kubernetes Requests, StormForge will configure it for you
+- Karpenter is much more cost effective than CAS by itself. Without `spot` instances we see 50% savings.
+- Karpenter with `spot` instances plus compression mode gives extra gains.
+- However, Karpenter still depends on Kubernetes Requests, StormForge will configure it for you. The `frontend` microservice needed more CPU but all other micro-services needed much less resources.
 
 ## Provision Environment
 
