@@ -1,0 +1,42 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: requests-and-limits
+spec:
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/name: requests-and-limits
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: c3-requests-and-limits
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: requests-and-limits
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: requests-and-limits
+        name: requests-and-limits
+    spec:
+      containers:
+      - name: resource-consumer
+        image: gcr.io/k8s-staging-e2e-test-images/resource-consumer:1.13
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: 500m
+            memory: 64Mi
+          limits:
+            cpu: 1000m
+            memory: 500Mi
