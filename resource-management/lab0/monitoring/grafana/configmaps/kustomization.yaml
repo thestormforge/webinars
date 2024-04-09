@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+configMapGenerator:
+- name: grafana-datasources
+  options:
+    disableNameSuffixHash: true
+  files:
+  - prometheus-datasource.yaml
+- name: grafana-dashboard-provisioners
+  options:
+    disableNameSuffixHash: true
+  files:
+  - dashboard-provisioners.yaml
+- name: grafana-dashboards
+  options:
+    disableNameSuffixHash: true
+  files:
+  - dashboards/resource-usage-by-pod.json
+  - dashboards/resource-usage-observatory.json
+- name: grafana-custom-ini
+  options:
+    disableNameSuffixHash: true
+  files:
+  - custom.ini

@@ -1,0 +1,93 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: cadvisor
+  name: cadvisor
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  annotations:
+    seccomp.security.alpha.kubernetes.io/pod: docker/default
+  labels:
+    app: cadvisor
+  name: cadvisor
+spec:
+  selector:
+    matchLabels:
+      app: cadvisor
+      name: cadvisor
+  template:
+    metadata:
+      labels:
+        app: cadvisor
+        name: cadvisor
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - image: gcr.io/cadvisor/cadvisor:v0.47.2
+        name: cadvisor
+        args:
+        - --enable_metrics=cpu,memory
+        - --housekeeping_interval=1s
+        - --allow_dynamic_housekeeping=false
+        - --global_housekeeping_interval=10s
+        - --storage_duration=5s
+        resources:
+          requests:
+            cpu: 100m
+            memory: 200Mi
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /rootfs
+          name: rootfs
+          readOnly: true
+        - mountPath: /var/run
+          name: var-run
+          readOnly: true
+        - mountPath: /sys
+          name: sys
+          readOnly: true
+        - mountPath: /var/lib/docker
+          name: docker
+          readOnly: true
+        - mountPath: /dev/disk
+          name: disk
+          readOnly: true
+      serviceAccountName: cadvisor
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - hostPath:
+          path: /
+        name: rootfs
+      - hostPath:
+          path: /var/run
+        name: var-run
+      - hostPath:
+          path: /sys
+        name: sys
+      - hostPath:
+          path: /var/lib/docker
+        name: docker
+      - hostPath:
+          path: /dev/disk
+        name: disk
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cadvisor
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: cadvisor
+    name: cadvisor
+  sessionAffinity: None
+  type: ClusterIP

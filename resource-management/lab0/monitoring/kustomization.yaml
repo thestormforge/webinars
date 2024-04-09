@@ -1,0 +1,32 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: monitoring
+
+resources:
+- namespace.yaml
+- cadvisor.yaml
+- prometheus/
+- grafana/
+
+patches:
+- target:
+    kind: Deployment
+  patch: |-
+    kind: Deployment
+    metadata:
+      name: n/a
+    spec:
+      template:
+        spec:
+          tolerations:
+          - key: "node-role.kubernetes.io/control-plane"
+            operator: "Exists"
+            effect: "NoSchedule"
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: "node-role.kubernetes.io/control-plane"
+                    operator: Exists

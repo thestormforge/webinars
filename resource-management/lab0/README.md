@@ -1,29 +1,20 @@
-# Lab 0 - Setup Minikube with 2 nodes with 2 CPUs each
+# Lab 0 - Setup Environment
 
-## Installing
+We will setup minikube, cAdvisor, prometheus and grafana.
+
+## Installing minikube
 
 ### MacOS
 Leveraging `brew` to install components.
 
-```
+```sh
 brew install minikube
 brew install qemu
 brew install socket_vmnet
+sudo brew services start socket_vmnet
 ```
 
-#### Notes on MacOS
-
-Attention: if you use any VPN, i.e. Cloudflare, stop the VPN before the exercise. Once you are completed, stop the `socket_vmnet` service and restart your VPN.
-To stop `socket_vmnet`:
-```
-sudo brew services stop socket_vmnet
-```
-
-As of this date (Apr/2024):
-- `minikube` latest version is `1.32.0`.
-If you have minikube, you should be able to upgrade it `brew upgrade minikube` or reinstall it `brew reinstall minikube`.
-- `qemu` latest version is `8.2.1`.
-- `socket_vmnet` latest version is `1.1.4`.
+On can see the whole script here to install on [macosx](./minikube/minikube-on-macos.sh).
 
 ### Linux 
 
@@ -33,14 +24,14 @@ TBD
 
 The following command will start `minikube` with `qemu`, two nodes with two vCPUs each. The container-runtime must be `containterd`!:
 
-```
-minikube start --driver=qemu --container-runtime=containerd --memory=2048 --cpus=2 --nodes=2 --network=socket_vmnet --profile demokcd 
+```sh
+minikube start --driver=qemu --container-runtime=containerd --memory=2048 --cpus=2 --nodes=2 --network=socket_vmnet --profile demo
 ```
 
 You should get an output similar to this:
 
-```
-😄  [demokcd] minikube v1.32.0 on Darwin 14.3.1 (arm64)
+```sh
+😄  [demo] minikube v1.32.0 on Darwin 14.3.1 (arm64)
 ✨  Using the qemu2 driver based on user configuration
 👍  Starting control plane node demokcd in cluster demokcd
 🔥  Creating qemu2 VM (CPUs=2, Memory=2048MB, Disk=20000MB) ...
@@ -70,17 +61,17 @@ You should get an output similar to this:
 🏄  Done! kubectl is now configured to use "demokcd" cluster and "default" namespace by default
 ```
 
-### Checking the node resources
+## Checking the node resources
 
 The following command should say the worker should have two vCPUs.
-```
-kubectl describe nodes demokcd-m02
+```sh
+kubectl describe nodes demo-m02
 ```
 
 What to expect:
 
-```
-Name:               demokcd-m02
+```sh
+Name:               demo-m02
 Roles:              <none>
 (...)
 Capacity:
@@ -95,9 +86,55 @@ Capacity:
 (...)
 ```
 
-### Tainting control-plane
+## Tainting control-plane
 
 This step will be important for the next lab:
+```sh
+kubectl taint nodes demo node-role.kubernetes.io/control-plane=:NoSchedule
 ```
-kubectl taint nodes demokcd node-role.kubernetes.io/control-plane=:NoSchedule
+
+## Setting up Monitoring
+
+cAdvisor, Prometheus and Grafana.
+Please note the `-k` instead of `-f`.
+
+```sh
+kubectl apply -k monitoring/
+
 ```
+
+### Checking pods
+
+All pods with the exception of one on control plane:
+
+```sh
+kubectl get pods -n monitoring -o wide 
+
+```
+
+### Checking the Grafana UI
+
+Run kubectl to port-forward the port:
+
+```sh
+kubectl port-forward -n monitoring svc/grafana 3000:3000
+```
+
+On a browser, go to `http://localhost:3000/d/resource-usage-observatory` and login with `admin` user and `adminDemo` password. You should see metrics from `monitoring` namespace. You are ready to the next lab.
+
+
+## Notes and Troubleshooting
+
+### Notes on MacOS
+
+Attention: if you use any VPN, i.e. Cloudflare, stop the VPN before the exercise. Once you are completed, stop the `socket_vmnet` service and restart your VPN.
+To stop `socket_vmnet`:
+```sh
+sudo brew services stop socket_vmnet
+```
+
+As of this date (Apr/2024):
+- `minikube` latest version is `1.32.0`.
+If you have minikube, you should be able to upgrade it `brew upgrade minikube` or reinstall it `brew reinstall minikube`.
+- `qemu` latest version is `8.2.1`.
+- `socket_vmnet` latest version is `1.1.4`.
