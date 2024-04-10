@@ -3,6 +3,12 @@
 This repo is to support "Navigating Kubernetes Cost Optimization with Karpenter & StormForge"
 webinar.
 
+## Webinars Given
+
+### March-2024
+
+[YouTube Short, Rafa Brito and Lucas Duarte](https://www.youtube.com/watch?v=RbOg0aZyQTw)
+
 ## Goal
 
 - Show the cost comparison between Cluster Autoscaler and Karpenter
@@ -94,9 +100,3 @@ Apply terraform:
 ```bash
 terraform init && terraform apply --auto-approve
 ```
-
-## Webinars Given
-
-### March-2024
-
-[YouTube Short, Rafa Brito and Lucas Duarte](https://www.youtube.com/watch?v=RbOg0aZyQTw)
