@@ -7,3 +7,5 @@ Please follow the labs on each subdirectory.
 [LAB0 - Setting up Environment](./lab0/README.md)
 
 [LAB1 - Testing CPU Requests and Limits](./lab1/README.md)
+
+[LAB1 - Testing Memory Requests and Limits](./lab2/README.md)

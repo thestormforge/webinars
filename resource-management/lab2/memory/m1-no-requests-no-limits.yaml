@@ -1,0 +1,44 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: no-requests-no-limits
+spec:
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/name: no-requests-no-limits
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: m1-no-requests-no-limits
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: no-requests-no-limits
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: no-requests-no-limits
+        name: no-requests-no-limits
+    spec:
+      terminationGracePeriodSeconds: 0
+      containers:
+      - name: memory-consumer
+        image: reidmv/startup-memory-consumer:latest
+        imagePullPolicy: "IfNotPresent"
+        ports:
+        - containerPort: 8080
+        env:
+        - name: STARTUP_CONSUME_MEBIBYTES
+          value: "0"
+        - name: STARTUP_CONSUME_SECONDS
+          value: "0"
+        - name: RUNTIME_CONSUME_MEBIBYTES
+          value: "64"

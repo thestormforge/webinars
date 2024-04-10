@@ -88,7 +88,7 @@ Capacity:
 
 ## Tainting control-plane
 
-This step will be important for the next lab:
+This step will be VERY important for the next lab:
 ```sh
 kubectl taint nodes demo node-role.kubernetes.io/control-plane=:NoSchedule
 ```
@@ -117,7 +117,7 @@ kubectl get pods -n monitoring -o wide
 Run kubectl to port-forward the port:
 
 ```sh
-kubectl port-forward -n monitoring svc/grafana 3000:3000
+kubectl port-forward -n monitoring svc/grafana 3000:3000 >/dev/null
 ```
 
 On a browser, go to `http://localhost:3000/d/resource-usage-observatory` and login with `admin` user and `adminDemo` password. You should see metrics from `monitoring` namespace. You are ready to the next lab.

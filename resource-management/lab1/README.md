@@ -2,10 +2,7 @@
 
 You must have completed [lab0](../lab0/README.md) for this demo.
 
-We will be used to demonstrate requests, limits, and effects of resource management.
-
 We will be using the Kubernetes [resource-consumer application](https://github.com/kubernetes/kubernetes/tree/master/test/images/resource-consumer), the same app used for K8s end-2-end testing for autoscaling, etc.
-
 
 ## Setting Three Deployments
 
@@ -58,6 +55,7 @@ On a different terminal, let's port-forward the services for each deployment:
 kubectl port-forward svc/no-requests-no-limits 8081:8080 -n cpu &
 kubectl port-forward svc/requests-no-limits 8082:8080 -n cpu &
 kubectl port-forward svc/requests-and-limits 8083:8080 -n cpu &
+kubectl port-forward -n monitoring svc/grafana 3000:3000 & >/dev/null
 ```
 
 ## Sending 450m CPU for each deployment
@@ -97,4 +95,9 @@ curl --data "millicores=1000&durationSec=15" http://localhost:8083/ConsumeCPU
 What do you see from the Grafana view?
 
 
+## Deleting Background processes
 
+Be ready for the next lab and delete the backgroup processes:
+```sh
+kill %1 %2 %3 %4
+```
