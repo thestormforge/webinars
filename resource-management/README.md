@@ -11,3 +11,10 @@ Please follow the labs on each subdirectory.
 [LAB2 - Testing Memory Requests and Limits](./lab2/README.md)
 
 [LAB3 - Testing Resource Management Policies](./lab3/README.md)
+
+
+## Demos Given
+
+## KCD LA - March/2024
+
+[Video](https://www.stormforge.io/videos/demystifying-kubernetes-resource-management/)
