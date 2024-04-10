@@ -94,3 +94,9 @@ Apply terraform:
 ```bash
 terraform init && terraform apply --auto-approve
 ```
+
+## Webinars Given
+
+### March-2024
+
+[YouTube Short, Rafa Brito and Lucas Duarte](https://www.youtube.com/watch?v=RbOg0aZyQTw)

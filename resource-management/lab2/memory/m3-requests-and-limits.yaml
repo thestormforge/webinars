@@ -37,7 +37,7 @@ spec:
         - containerPort: 8080
         env:
         - name: STARTUP_CONSUME_MEBIBYTES
-          value: "0"
+          value: "125"
         - name: STARTUP_CONSUME_SECONDS
           value: "0"
         - name: RUNTIME_CONSUME_MEBIBYTES

@@ -102,7 +102,7 @@ kubectl describe pod -l name=requests-and-limits -n memory | egrep -A 21 '^Conta
 
 # output
     Last State:     Terminated
-      Reason:       OOMKilled
+      Reason:       OOMKilled  <-----------
       Exit Code:    137
       Started:      Tue, 09 Apr 2024 21:15:29 -0500
       Finished:     Tue, 09 Apr 2024 21:19:43 -0500
@@ -112,7 +112,7 @@ kubectl describe pod -l name=requests-and-limits -n memory | egrep -A 21 '^Conta
 
 ## Checking Node behavior on Memory Overallocation
 
-Let's see how the node and pods behave when pods without limits allocate AN ADDINTIONAL memory: 250Mi bringing to the total of 400Mi per pod.
+Let's see how the node and pods behave when pods without limits allocate AN ADDITIONAL memory: 250Mi bringing to the total of 400Mi per pod (trying to simulate a memory leak).
 
 ```
 curl --data '{"mebibytes": 250, "seconds": 60, "delay": 1}' http://localhost:8081/ConsumeMem
