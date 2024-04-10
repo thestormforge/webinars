@@ -2,7 +2,7 @@
 
 You must have completed [lab0](../lab0/README.md) for this demo.
 
-We will be using the Kubernetes [resource-consumer application](https://github.com/kubernetes/kubernetes/tree/master/test/images/resource-consumer), the same app used for K8s end-2-end testing for autoscaling, etc.
+We will be using a simple [memory application](https://github.com/reidmv/startup-memory-consumer), (The resource-consumer doesn't work well for demoing because it forks a separate process to consume memory, so the container doesn't oomkill when that process is killed).
 
 ## Setting Three Deployments
 

@@ -1,0 +1,2 @@
+NAME          PHASE        REQUESTS.CPU                              REQUESTS.MEM
+metadata.name status.phase spec.containers[0].resources.requests.cpu spec.containers[0].resources.requests.memory

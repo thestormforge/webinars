@@ -1,0 +1,20 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: no-requests
+  namespace: policies
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: no-requests
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: no-requests
+        name: no-requests
+    spec:
+      containers:
+      - name: main
+        image: gcr.io/k8s-staging-e2e-test-images/resource-consumer:1.13
+        imagePullPolicy: "IfNotPresent"
