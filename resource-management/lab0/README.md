@@ -18,14 +18,28 @@ On can see the whole script here to install on [macosx](./minikube/minikube-on-m
 
 ### Linux 
 
-TBD
+```sh
+# using KVM
+sudo apt-get install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
+sudo adduser `id -un` libvirt
+sudo adduser `id -un` kvm
+
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
+sudo dpkg -i minikube_latest_amd64.deb
+```
 
 ## Starting minikube
 
 The following command will start `minikube` with `qemu`, two nodes with two vCPUs each. The container-runtime must be `containterd`!:
 
+Mac OS X:
 ```sh
 minikube start --driver=qemu --container-runtime=containerd --memory=2048 --cpus=2 --nodes=2 --network=socket_vmnet --profile demo
+```
+
+Linux:
+```sh
+minikube start --driver=kvm --container-runtime=containerd --memory=2048 --cpus=2 --nodes=2 --profile demo
 ```
 
 You should get an output similar to this:
