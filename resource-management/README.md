@@ -17,4 +17,4 @@ Please follow the labs on each subdirectory.
 
 ## KCD LA - March/2024
 
-[Video](https://www.stormforge.io/videos/demystifying-kubernetes-resource-management/)
+[Video - Reid Vandewiele ](https://www.stormforge.io/videos/demystifying-kubernetes-resource-management/)
