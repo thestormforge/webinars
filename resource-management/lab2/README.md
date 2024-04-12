@@ -58,26 +58,8 @@ kubectl describe node demo-m02
 
 ```
 
-See the Grafana, each pod should be taken around `85Mi`. 
+See the Grafana, each pod should be taken around `150Mi`. 
 
-
-## Setting the baseline of 150Mi Memory for each deployment
-
-But let's have a baseline of 150Mi, which mean each pod during the startup will use this amount of memory:
-
-```sh
-kubectl set env deployment/m1-no-requests-no-limits RUNTIME_CONSUME_MEBIBYTES=150 -n memory
-kubectl set env deployment/m2-requests-no-limits RUNTIME_CONSUME_MEBIBYTES=150 -n memory
-kubectl set env deployment/m3-requests-and-limits RUNTIME_CONSUME_MEBIBYTES=150 -n memory
-```
-Confirm on Grafana the new memory allocation.
-
-On a different terminal, let's port-forward the services for each deployment:
-
-```
-kubectl port-forward svc/no-requests-no-limits 8081:8080 -n memory &
-kubectl port-forward svc/requests-no-limits 8082:8080 -n memory &
-kubectl port-forward svc/requests-and-limits 8083:8080 -n memory &
 ```
 
 ## Testing Memory Limits
