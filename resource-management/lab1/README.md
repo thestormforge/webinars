@@ -16,14 +16,16 @@ kubectl apply -k cpu/
 Checking the pods, all should be running on `demo-m02` node:
 
 ```
-% kubectl get pods -n cpu -o wide
+kubectl get pods -n cpu -o wide
 ```
 
 Show the CPU requests and limits, confirming settings:
 
-```
+```sh
 kubectl get pods -n cpu -o yaml | yq  '[ .items[] | {"name": .metadata.name, "qosClass": .status.qosClass, "resources": {"requests": {"cpu": .spec.containers[0].resources.requests.cpu}, "limits": {"cpu": .spec.containers[0].resources.limits.cpu} } } ]'
+```
 
+```
 # output
 - name: c1-no-requests-no-limits-697885b694-bn4gm
   qosClass: BestEffort
