@@ -6,7 +6,7 @@ You must have completed [lab0](../lab0/README.md) for this demo.
 
 ```sh
 kubectl delete --ignore-not-found -k policies/
-kubectl create -k policies/namespace.yaml
+kubectl create -f policies/namespace.yaml
 ```
 
 ## Showing how LimitRanges Work
