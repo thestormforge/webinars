@@ -23,7 +23,9 @@ Show the CPU requests and limits, confirming settings:
 
 ```
 kubectl get pods -n memory -o yaml | yq  '[ .items[] | {"name": .metadata.name, "qosClass": .status.qosClass, "resources": {"requests": {"memory": .spec.containers[0].resources.requests.memory}, "limits": {"memory": .spec.containers[0].resources.limits.memory} } } ]'
+```
 
+```
 # output
 - name: m1-no-requests-no-limits-7dc868f7b6-rhzsq
   qosClass: BestEffort
@@ -83,7 +85,7 @@ kubectl port-forward svc/requests-and-limits 8083:8080 -n memory &
 Let's see if memory limits are being respected asking the pod to consume more than its limits, i.e. 500Mi (remember limit is set to 250Mi).
 
 ```
-curl --data '{"mebibytes": 500, "seconds": 30, "delay": 1}' http://localhost:8083/ConsumeMem
+curl --data '{"mebibytes": 500, "seconds": 60, "delay": 1}' http://localhost:8083/ConsumeMem
 ```
 
 What do you see from the Grafana view?
@@ -91,15 +93,12 @@ What do you see from the Grafana view?
 Other commands to run:
 
 ```sh
-k get pod -l name=requests-and-limits -n memory
-
-# check number of pod restarts
+kubectl describe pod -l name=requests-and-limits -n memory | egrep -A 21 '^Containers:$'
 ```
 
-```sh
+Check number of pod restarts
 
-kubectl describe pod -l name=requests-and-limits -n memory | egrep -A 21 '^Containers:$'
-
+```
 # output
     Last State:     Terminated
       Reason:       OOMKilled  <-----------
@@ -115,8 +114,8 @@ kubectl describe pod -l name=requests-and-limits -n memory | egrep -A 21 '^Conta
 Let's see how the node and pods behave when pods without limits allocate AN ADDITIONAL memory: 250Mi bringing to the total of 400Mi per pod (trying to simulate a memory leak).
 
 ```
-curl --data '{"mebibytes": 250, "seconds": 60, "delay": 1}' http://localhost:8081/ConsumeMem
-curl --data '{"mebibytes": 250, "seconds": 60, "delay": 1}' http://localhost:8082/ConsumeMem
+curl --data '{"mebibytes": 250, "seconds": 600, "delay": 1}' http://localhost:8081/ConsumeMem
+curl --data '{"mebibytes": 250, "seconds": 600, "delay": 1}' http://localhost:8082/ConsumeMem
 ```
 
 What do you see from the Grafana view? 
