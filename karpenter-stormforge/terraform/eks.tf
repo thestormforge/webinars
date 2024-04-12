@@ -369,7 +369,7 @@ module "eks_data_addons" {
             values: ["c", "m", "r"]
           - key: "karpenter.k8s.aws/instance-size"
             operator: In
-            values: ["large", "xlarge", "2xlarge", "4xlarge", "8xlarge", "16xlarge", "24xlarge"]
+            values: ["medium", "large", "xlarge", "2xlarge", "4xlarge", "8xlarge", "16xlarge", "24xlarge"]
           - key: "kubernetes.io/arch"
             operator: In
             values: ["amd64"]
