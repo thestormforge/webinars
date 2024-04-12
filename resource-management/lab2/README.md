@@ -60,6 +60,11 @@ kubectl describe node demo-m02
 
 See the Grafana, each pod should be taken around `150Mi`. 
 
+Expose ports
+```
+kubectl port-forward svc/no-requests-no-limits 8081:8080 -n cpu &
+kubectl port-forward svc/requests-no-limits 8082:8080 -n cpu &
+kubectl port-forward svc/requests-and-limits 8083:8080 -n cpu &
 ```
 
 ## Testing Memory Limits
