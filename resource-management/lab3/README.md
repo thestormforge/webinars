@@ -29,6 +29,12 @@ Create the basic deployment in the policies namespace:
 kubectl apply -f policies/no-requests.yaml
 ```
 
+Show current deployments and replicasets:
+
+```sh
+kubectl get deployments,replicasets -n policies
+```
+
 Now apply the LimitRange policy:
 
 ```sh
