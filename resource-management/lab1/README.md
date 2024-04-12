@@ -55,7 +55,6 @@ On a different terminal, let's port-forward the services for each deployment:
 kubectl port-forward svc/no-requests-no-limits 8081:8080 -n cpu &
 kubectl port-forward svc/requests-no-limits 8082:8080 -n cpu &
 kubectl port-forward svc/requests-and-limits 8083:8080 -n cpu &
-kubectl port-forward -n monitoring svc/grafana 3000:3000 & >/dev/null
 ```
 
 ## Sending 450m CPU for each deployment
@@ -99,5 +98,5 @@ What do you see from the Grafana view?
 
 Be ready for the next lab and delete the backgroup processes:
 ```sh
-kill %1 %2 %3 %4
+kill %2 %3 %4
 ```
