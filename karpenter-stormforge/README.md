@@ -7,7 +7,8 @@ webinar.
 
 ### March-2024
 
-[YouTube Short, Rafa Brito and Lucas Duarte](https://www.youtube.com/watch?v=RbOg0aZyQTw)
+[YouTube Short - 20min: Rafa Brito and Lucas Duarte](https://www.youtube.com/watch?v=RbOg0aZyQTw)
+[YouTube Full - 45min: Rafa Brito and Lucas Duarte](https://youtu.be/4-RO401jXCY)
 
 ## Goal
 
