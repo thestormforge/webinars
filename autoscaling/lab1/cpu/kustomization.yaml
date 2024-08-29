@@ -6,6 +6,7 @@ resources:
 - namespace.yaml
 - c1-no-requests-no-limits.yaml
 - c2-requests-no-limits.yaml
+- c3-small-requests-no-limits.yaml
 
 commonLabels:
   app.kubernetes.io/part-of: hpa-cpu-demo

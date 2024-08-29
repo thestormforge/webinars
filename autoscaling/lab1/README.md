@@ -83,19 +83,14 @@ Please note that HPA takes some time to scale down even if the CPU is no longer 
 
 ### Optional: Show the inconsistency of HPA over CPU
 
-Delete namespace `hpa-cpu-demo` and recreate workloads with `kubectl apply -k`.
+Look at the c3-small-requests workload, it has 50millicores as request.
+
+Let's create the HPA with the same setting:
 
 ```
-# edit the deployment and set Requests to 50m instead of 500m
-kubectl -n hpa-cpu-demo edit deployment c2-requests-no-limits
-```
-
-Then recreate the HPA with the same setting:
-
-```
-kubectl -n hpa-cpu-demo autoscale deployment c2-requests-no-limits --cpu-percent=50 --min=1 --max=5
-kubectl -n hpa-cpu-demo port-forward svc/requests-no-limits 8082:8080 &
-curl --data "millicores=450&durationSec=3600" http://localhost:8082/ConsumeCPU
+kubectl -n hpa-cpu-demo autoscale deployment c3-small-requests-no-limits --cpu-percent=50 --min=1 --max=5
+kubectl -n hpa-cpu-demo port-forward svc/small-requests-no-limits 8083:8080 &
+curl --data "millicores=450&durationSec=3600" http://localhost:8083/ConsumeCPU
 ```
 
 What do you see now? the HPA after awhile will report to 900% utilization. Remember, utilization is a percentage over request.
@@ -105,12 +100,11 @@ But if you run the following:
 ```sh
 % kubectl top pods -n hpa-cpu-demo
 NAMESPACE            NAME                                               CPU(cores)   MEMORY(bytes)   
-hpa-cpu-demo         c1-no-requests-no-limits-68676c994d-nmfwb          0m           0Mi             
-hpa-cpu-demo         c2-requests-no-limits-5b5c5b6765-5snjv             450m         7Mi             
-hpa-cpu-demo         c2-requests-no-limits-5b5c5b6765-l58ht             0m           0Mi             
-hpa-cpu-demo         c2-requests-no-limits-5b5c5b6765-n5b98             0m           0Mi             
-hpa-cpu-demo         c2-requests-no-limits-5b5c5b6765-tlqg8             0m           0Mi             
-hpa-cpu-demo         c2-requests-no-limits-5b5c5b6765-vbt4k             0m           1Mi             
+hpa-cpu-demo         c3-small-requests-no-limits-5b5c5b6765-5snjv             450m         7Mi             
+hpa-cpu-demo         c3-small-requests-no-limits-5b5c5b6765-l58ht             0m           0Mi             
+hpa-cpu-demo         c3-small-requests-no-limits-5b5c5b6765-n5b98             0m           0Mi             
+hpa-cpu-demo         c3-small-requests-no-limits-5b5c5b6765-tlqg8             0m           0Mi             
+hpa-cpu-demo         c3-small-requests-no-limits-5b5c5b6765-vbt4k             0m           1Mi             
 ```
 
 Note that other replicas are doing nothing, only the first one is actually busy. The replicas are not helping at all.
