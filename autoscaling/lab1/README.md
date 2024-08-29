@@ -14,7 +14,7 @@ Setting up workloads
 ```
 kubectl -n hpa-cpu-demo autoscale deployment c1-no-requests-no-limits --cpu-percent=50 --min=1 --max=5
 kubectl -n hpa-cpu-demo autoscale deployment c2-requests-no-limits --cpu-percent=50 --min=1 --max=5
-
+kubectl -n hpa-cpu-demo autoscale deployment c2-small-requests-no-limits --cpu-percent=50 --min=1 --max=5
 ```
 
 ## Observe HPAs
@@ -85,10 +85,7 @@ Please note that HPA takes some time to scale down even if the CPU is no longer 
 
 Look at the c3-small-requests workload, it has 50millicores as request.
 
-Let's create the HPA with the same setting:
-
 ```
-kubectl -n hpa-cpu-demo autoscale deployment c3-small-requests-no-limits --cpu-percent=50 --min=1 --max=5
 kubectl -n hpa-cpu-demo port-forward svc/small-requests-no-limits 8083:8080 &
 curl --data "millicores=450&durationSec=3600" http://localhost:8083/ConsumeCPU
 ```
