@@ -123,7 +123,7 @@ Installing RabbitMQ on KinD cluster:
 
 helm repo add bitnami https://charts.bitnami.com/bitnami
 
-helm install rabbitmq --set auth.username=user --set auth.password=PASSWORD --set volumePermissions.enabled=true bitnami/rabbitmq  --namespace default --wait
+helm install rabbitmq --set auth.username=user --set auth.password=PASSWORD --set volumePermissions.enabled=true bitnami/rabbitmq  --namespace default
 
 ```
 
