@@ -131,6 +131,9 @@ Checking RabbitMQ installation:
 
 ```sh
 % k get pods -n default
+```
+
+```sh
 NAME         READY   STATUS    RESTARTS   AGE
 rabbitmq-0   1/1     Running   0          111s
 ```
@@ -140,13 +143,15 @@ rabbitmq-0   1/1     Running   0          111s
 
 ```sh
 kubectl apply -f https://raw.githubusercontent.com/kedacore/sample-go-rabbitmq/main/deploy/deploy-consumer.yaml -n default
-
 ```
 
 Checking the deployment, it is scaled to 0 despite `minReplicas: 1` from the HPA object.
 
 ```sh
-% k get deploy rabbitmq-consumer -n default
+k get deploy rabbitmq-consumer -n default
+```
+
+```sh
 NAME                READY   UP-TO-DATE   AVAILABLE   AGE
 rabbitmq-consumer   0/0     0            0           35s
 ```
@@ -159,12 +164,18 @@ The `ScaledObject` creates another KEDA object as well: `TriggerAuthentication` 
 Now, let's set up a Kubernetes job to send 300 messages on the rabbitmq queue and monitor the deployment:
 
 ```sh
-% kubectl apply -f https://raw.githubusercontent.com/kedacore/sample-go-rabbitmq/main/deploy/deploy-publisher-job.yaml
+kubectl apply -f https://raw.githubusercontent.com/kedacore/sample-go-rabbitmq/main/deploy/deploy-publisher-job.yaml
+```
 
+```sh
+k get deploy rabbitmq-consumer -n default -w
+```
 
-% k get deploy rabbitmq-consumer -n default -w
+```sh
+k get deploy rabbitmq-consumer -n default -w
+```
 
-%  k get deploy rabbitmq-consumer -n default -w
+```sh
 NAME                READY   UP-TO-DATE   AVAILABLE   AGE
 rabbitmq-consumer   0/0     0            0           71m
 rabbitmq-consumer   0/1     0            0           71m
