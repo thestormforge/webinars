@@ -14,7 +14,7 @@ Setting up workloads
 ```
 kubectl -n hpa-cpu-demo autoscale deployment c1-no-requests-no-limits --cpu-percent=50 --min=1 --max=5
 kubectl -n hpa-cpu-demo autoscale deployment c2-requests-no-limits --cpu-percent=50 --min=1 --max=5
-kubectl -n hpa-cpu-demo autoscale deployment c2-small-requests-no-limits --cpu-percent=50 --min=1 --max=5
+kubectl -n hpa-cpu-demo autoscale deployment c3-small-requests-no-limits --cpu-percent=50 --min=1 --max=5
 ```
 
 ## Observe HPAs
