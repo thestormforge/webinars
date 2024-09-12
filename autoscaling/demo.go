@@ -4,10 +4,6 @@ import (
 	demo "github.com/saschagrunert/demo"
 )
 
-const (
-	pipeToColor string = "| colorize" // `| pygmentize -O style=material -l yaml || cat`
-)
-
 func main() {
 	d := demo.New()
 
@@ -17,8 +13,11 @@ func main() {
 
 	d.Add(cleanSlate(), "clean-slate", "Ensure a pristine demo environment")
 	d.Add(installMetricsServer(), "setup-metrics", "Install the metrics server")
-	d.Add(cpuDemoSetup(), "setup-cpu", "Setup the CPU demo")
-	d.Add(cpuTop(), "cpu-top", "Setup the CPU demo")
+	d.Add(cpuDemoSetup(), "setup-cpu", "Setup the CPU workloads")
+	d.Add(cpuTop(), "cpu-top", "Show CPU utilization")
+	d.Add(hpaDemoSetup(), "setup-hpa", "Setup the HPA")
+	d.Add(showHPA(), "show-hpa", "Show the HPA")
+	d.Add(cpuTopC3(), "cpu-top-c3", "Show the HPA")
 
 	d.Run()
 }
@@ -104,6 +103,55 @@ func cpuTop() *demo.Run {
 
 	r.Step(nil, demo.S(
 		`kubectl top pods -n hpa-cpu-demo`,
+	))
+
+	return r
+}
+
+func hpaDemoSetup() *demo.Run {
+	r := demo.NewRun(
+		`Create the HPA for the CPU workloads`,
+	)
+
+	r.Step(demo.S(
+		`Create three identical HPA objects, one for each workload:`,
+		`Every HPA to scale up to 5 replicas if CPU usage is above 50%`,
+	), demo.S(
+		`kubectl -n hpa-cpu-demo autoscale deployment c1-no-requests-no-limits --cpu-percent=50 --min=1 --max=5;`,
+		`kubectl -n hpa-cpu-demo autoscale deployment c2-requests-no-limits --cpu-percent=50 --min=1 --max=5;`,
+		`kubectl -n hpa-cpu-demo autoscale deployment c3-small-requests-no-limits --cpu-percent=50 --min=1 --max=5`,
+	))
+
+	/*
+		r.Step(demo.S(
+			`Show HPA objects:`,
+		), demo.S(
+			`kubectl -n hpa-cpu-demo get hpa`,
+		))
+	*/
+
+	return r
+}
+
+func showHPA() *demo.Run {
+	r := demo.NewRun(
+		`Inspect HPA:`,
+	)
+
+	r.Step(nil, demo.S(
+		`kubectl -n hpa-cpu-demo get hpa`,
+	))
+
+	return r
+}
+
+func cpuTopC3() *demo.Run {
+	r := demo.NewRun(
+		`Inspect CPU usage of the pods of small request workload`,
+	)
+
+	r.Step(nil, demo.S(
+		`kubectl -n hpa-cpu-demo top pod -l name=small-requests-no-limits`,
 	))
 
 	return r
