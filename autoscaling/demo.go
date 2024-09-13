@@ -14,10 +14,12 @@ func main() {
 	d.Add(cleanSlate(), "clean-slate", "Ensure a pristine demo environment")
 	d.Add(installMetricsServer(), "setup-metrics", "Install the metrics server")
 	d.Add(cpuDemoSetup(), "setup-cpu", "Setup the CPU workloads")
+	d.Add(loadCPU(), "load-cpu", "Load workloads with CPU utilization")
 	d.Add(cpuTop(), "cpu-top", "Show CPU utilization")
 	d.Add(hpaDemoSetup(), "setup-hpa", "Setup the HPA")
 	d.Add(showHPA(), "show-hpa", "Show the HPA")
-	d.Add(cpuTopC3(), "cpu-top-c3", "Show the HPA")
+	d.Add(cpuTopC2(), "cpu-top-c2", "Show the HPA C2")
+	d.Add(cpuTopC3(), "cpu-top-c3", "Show the HPA C3")
 
 	d.Run()
 }
@@ -30,7 +32,8 @@ func cleanSlate() *demo.Run {
 	r.Step(demo.S(
 		`Delete any resources from previous demos`,
 	), demo.S(
-		`kubectl delete --ignore-not-found ns hpa-cpu-demo`,
+		`kubectl delete --ignore-not-found ns hpa-cpu-demo;`,
+		`kubectl delete --ignore-not-found -n kube-system deployment metrics-server`,
 	))
 
 	return r
@@ -60,6 +63,7 @@ func cpuDemoSetup() *demo.Run {
 	r.Step(demo.S(
 		`Three identical workloads that consume CPU cycles but each with different CPU requests settings.`,
 		`These will be used to demonstrate HPA on CPU.`,
+		`Each workload will consume 450 millicores of CPU.`,
 	), demo.S(
 		`kubectl apply -k lab1/cpu/`,
 	))
@@ -79,6 +83,14 @@ func cpuDemoSetup() *demo.Run {
 		`          "resources": {`,
 		`            "requests":   {"cpu": .spec.containers[0].resources.requests.cpu  }}}]'`,
 	))
+
+	return r
+}
+
+func loadCPU() *demo.Run {
+	r := demo.NewRun(
+		`Inject CPU load into the workloads`,
+	)
 
 	r.Step(demo.S(
 		`Load each workload with a 450m CPU of work.`,
@@ -145,6 +157,22 @@ func showHPA() *demo.Run {
 	return r
 }
 
+func cpuTopC2() *demo.Run {
+	r := demo.NewRun(
+		`Inspect CPU usage of the pods of big request workload`,
+	)
+
+	r.Step(nil, demo.S(
+		`kubectl -n hpa-cpu-demo top pod -l name=requests-no-limits`,
+	))
+
+	r.Step(demo.S(
+		`Note two replicas, but one is consuming the CPU, hence it is halving the 90% to 45%.`,
+	), nil)
+
+	return r
+}
+
 func cpuTopC3() *demo.Run {
 	r := demo.NewRun(
 		`Inspect CPU usage of the pods of small request workload`,
@@ -153,6 +181,12 @@ func cpuTopC3() *demo.Run {
 	r.Step(nil, demo.S(
 		`kubectl -n hpa-cpu-demo top pod -l name=small-requests-no-limits`,
 	))
+
+	r.Step(demo.S(
+		`Note multiple replicas, but one is consuming most of the CPU.`,
+		`HPA is accusing to 180% from 900% but it still high (requests is set too low).`,
+		`Increasing the max replicas will make it worse (only one replica is busy).`,
+	), nil)
 
 	return r
 }
