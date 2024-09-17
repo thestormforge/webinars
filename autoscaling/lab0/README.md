@@ -29,6 +29,15 @@ helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
 helm upgrade --install metrics-server metrics-server/metrics-server
 ```
 
+## Using manifest from this repo
+
+There is a manifest file on this repo, ready to be applied on a kind or minikube cluster.
+
+```
+kubectl apply -f metrics-server.yaml
+```
+
+
 ## Internals of Metrics Server
 
 It is a controller that serves multiple K8s API endpoints `/apis/metrics/v1beta1`. Control plane talks to metric server over port `10250`.
