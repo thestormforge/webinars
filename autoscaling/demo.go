@@ -39,9 +39,9 @@ func cleanSlate() *demo.Run {
 	), demo.S(
 		`kubectl delete --ignore-not-found ns hpa-cpu-demo;`,
 		`kubectl delete --ignore-not-found -n kube-system deployment metrics-server;`,
-		`helm delete keda --namespace keda; kubectl delete ns keda;`,
-		`helm delete rabbitmq --namespace default;`,
-		`kubectl delete --ignore-not-found -f https://raw.githubusercontent.com/kedacore/sample-go-rabbitmq/main/deploy/deploy-consumer.yaml -n default`,
+		`kubectl delete --ignore-not-found -f https://raw.githubusercontent.com/kedacore/sample-go-rabbitmq/main/deploy/deploy-consumer.yaml -n default 2>/dev/null;`,
+		`helm delete --ignore-not-found keda --namespace keda 2>/dev/null; kubectl delete ns keda --ignore-not-found;`,
+		`helm delete --ignore-not-found rabbitmq --namespace default 2>/dev/null`,
 	))
 
 	return r
