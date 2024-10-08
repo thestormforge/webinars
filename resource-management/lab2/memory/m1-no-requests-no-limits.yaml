@@ -41,4 +41,4 @@ spec:
         - name: STARTUP_CONSUME_SECONDS
           value: "0"
         - name: RUNTIME_CONSUME_MEBIBYTES
-          value: "64"
+          value: "130"

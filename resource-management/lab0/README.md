@@ -34,12 +34,12 @@ The following command will start `minikube` with `qemu`, two nodes with two vCPU
 
 Mac OS X:
 ```sh
-minikube start --driver=qemu --container-runtime=containerd --memory=2048 --cpus=2 --nodes=2 --network=socket_vmnet --profile demo
+minikube start --driver=qemu --extra-config=kubelet.eviction-hard=\"memory.available\<200Mi\" --container-runtime=containerd --memory=2048 --cpus=2 --nodes=2 --network=socket_vmnet --profile demo
 ```
 
 Linux:
 ```sh
-minikube start --driver=kvm --container-runtime=containerd --memory=2048 --cpus=2 --nodes=2 --profile demo
+minikube start --driver=kvm --extra-config=kubelet.eviction-hard=\"memory.available\<200Mi\"  --container-runtime=containerd --memory=2048 --cpus=2 --nodes=2 --profile demo
 ```
 
 You should get an output similar to this:
@@ -109,11 +109,12 @@ kubectl taint nodes demo node-role.kubernetes.io/control-plane=:NoSchedule
 
 ## Setting up Monitoring
 
-cAdvisor, Prometheus and Grafana.
+cAdvisor, Prometheus and Grafana and metrics-server.
 Please note the `-k` instead of `-f`.
 
 ```sh
 kubectl apply -k monitoring/
+kubectl apply -k metrics-server/
 
 ```
 
@@ -136,6 +137,12 @@ kubectl port-forward -n monitoring svc/grafana 3000:3000 >/dev/null
 
 On a browser, go to `http://localhost:3000/d/resource-usage-observatory` and login with `admin` user and `adminDemo` password. You should see metrics from `monitoring` namespace. You are ready to the next lab.
 
+## Stopping and Deleting minikube
+
+```sh
+minikube stop --profile demo
+minikube delete --profile demo
+```
 
 ## Notes and Troubleshooting
 

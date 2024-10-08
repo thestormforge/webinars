@@ -11,7 +11,7 @@ go run demo.go --show-rabbitmq-workload --auto
 sleep 2
 clear
 go run demo.go --scale-rabbitmq-workload --auto
-echo "Waiting 30 seconds..."; sleep 30
+echo "Waiting 15 seconds..."; sleep 15
 clear
 go run demo.go --show-rabbitmq-workload --auto
 echo "Waiting 15 seconds..."; sleep 15
