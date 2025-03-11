@@ -1,0 +1,22 @@
+# Default values for sf-hipster-shop-loadgenerator.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+#
+frontendAddr: frontend:80
+
+replicaCount: 4
+
+users:
+  floor: 250
+  spread: 2000
+  spikeMagnitude: 3
+  unifNoiseMultiplierLowerBound: 0.75
+  unifNoiseMultiplierUpperBound: 1.25
+
+# nodeSelector:
+#   provisionerType: "infra"
+
+resources:
+  requests:
+    cpu: 500m
+    memory: 700Mi
