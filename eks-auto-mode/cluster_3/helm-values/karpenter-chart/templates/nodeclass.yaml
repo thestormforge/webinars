@@ -1,0 +1,13 @@
+{{- range .Values.nodeClasses }}
+{{- if .enabled }}
+---
+apiVersion: eks.amazonaws.com/v1
+kind: NodeClass
+metadata:
+  name: default
+  namespace: default
+spec:
+  ephemeralStorage:
+    size: "160Gi"
+{{- end }}
+{{- end }}

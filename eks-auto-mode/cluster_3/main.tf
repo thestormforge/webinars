@@ -1,7 +1,7 @@
 locals {
   region                   = "us-east-1"
   vpc_cidr                 = "10.0.0.0/16"
-  name                     = "eks-automode-cluster-demo-2"
+  name                     = "eks-automode-cluster-demo-3"
   cluster_version          = "1.32"
   azs                      = slice(data.aws_availability_zones.available.names, 0, 3)
   stormforge_client_id     = var.stormforge_client_id
@@ -105,7 +105,7 @@ module "eks" {
 
   cluster_compute_config = {
     enabled    = true
-    node_pools = ["general-purpose", "system"]
+    node_pools = ["system"]
   }
 
 
@@ -230,7 +230,36 @@ resource "kubernetes_config_map" "cluster_defaults" {
   ]
 }
 
+# Karpenter NodePool
+resource "helm_release" "karpenter_compute_optimized" {
+  name       = "karpenter-compute-optimized"
+  chart      = "${path.module}/helm-values/karpenter-chart"
+  namespace  = "default"
+  wait       = false
+  depends_on = [module.eks]
 
+  values     = [file("${path.module}/helm-values/karpenter-chart/compute-optimized.yaml")]
+  # Set the cluster name for all resources
+  set {
+    name  = "clusterName"
+    value = local.name
+  }
+}
+
+resource "helm_release" "karpenter_memory_optimized" {
+  name       = "karpenter-memory-optimized"
+  chart      = "${path.module}/helm-values/karpenter-chart"
+  namespace  = "default"
+  wait       = false
+  depends_on = [module.eks]
+
+  values     = [file("${path.module}/helm-values/karpenter-chart/memory-optimized.yaml")]
+  # Set the cluster name for all resources
+  set {
+    name  = "clusterName"
+    value = local.name
+  }
+}
 
 # Outputs
 output "configure_kubectl" {
