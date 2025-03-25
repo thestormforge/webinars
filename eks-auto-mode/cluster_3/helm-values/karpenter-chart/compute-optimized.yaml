@@ -32,9 +32,7 @@ nodePools:
         values: ["spot", "on-demand"]
     disruption:
       consolidationPolicy: "WhenEmptyOrUnderutilized"
-      consolidateAfter: "1m"
-      budgets:
-        - nodes: "5%"
+      consolidateAfter: "30s"
     limits:
       cpu: "1000"
       memory: 1000Gi

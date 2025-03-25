@@ -222,6 +222,9 @@ resource "kubernetes_config_map" "cluster_defaults" {
       live.stormforge.io/schedule: "P1D"
       live.stormforge.io/auto-deploy: "Enabled"
       live.stormforge.io/containers.memory.requests.min: "64Mi"
+      live.stormforge.io/pod-scheduling.optimization-policy: "InstanceCategories"
+      live.stormforge.io/pod-scheduling.instance-categories.node-affinity.patch-path: ""
+      live.stormforge.io/pod-scheduling.instance-categories.node-affinity.type: "PreferredDuringSchedulingIgnoredDuringExecution"
     EOT
   }
 
