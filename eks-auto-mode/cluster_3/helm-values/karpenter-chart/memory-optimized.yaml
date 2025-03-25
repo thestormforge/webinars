@@ -1,0 +1,39 @@
+# Default values for karpenter-resources
+# This is a YAML-formatted file.
+
+clusterName: ""  # Will be set from Terraform
+
+# NodeClasses configuration
+nodeClasses:
+  - enabled: false
+
+# NodePools configuration
+nodePools:
+  - enabled: true
+    name: "memory-optimized"
+    labels:
+      stormforge.io/instance-category: "memory-optimized"
+    nodeClassRef:
+      name: "default"
+      kind: "NodeClass"
+      group: eks.amazonaws.com
+    requirements:
+      - key: "eks.amazonaws.com/instance-category"
+        operator: "In"
+        values: ["r"]
+      - key: "eks.amazonaws.com/instance-cpu"
+        operator: In
+        values: ["4", "8", "16", "32"]
+      - key: "kubernetes.io/arch"
+        operator: "In"
+        values: ["amd64"]
+      - key: "karpenter.sh/capacity-type"
+        operator: "In"
+        values: ["spot", "on-demand"]
+    disruption:
+      consolidationPolicy: "WhenEmptyOrUnderutilized"
+      consolidateAfter: "30s"
+    limits:
+      cpu: "1000"
+      memory: 1000Gi
+    weight: 1
