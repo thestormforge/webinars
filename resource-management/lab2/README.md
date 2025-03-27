@@ -107,6 +107,8 @@ curl --data '{"mebibytes": 250, "seconds": 600, "delay": 1}' http://localhost:80
 
 What do you see from the Grafana view? 
 
+In this case 
+
 ```sh
 % kubectl get events | grep OOM
 5m11s       Warning   SystemOOM                 node/demo-m02   System OOM encountered, victim process: python, pid: 1637
@@ -119,7 +121,7 @@ kubectl describe pod -l name=requests-no-limits -n memory |  egrep -A 21 '^Conta
 
 # output
     Last State:     Terminated
-      Reason:       Error   <------------------------ Not OOM
+      Reason:       Error   <------------------------ Not cgroups OOM but by System OOM
       Exit Code:    137
       Started:      Tue, 09 Apr 2024 21:15:22 -0500
       Finished:     Tue, 09 Apr 2024 21:28:16 -0500

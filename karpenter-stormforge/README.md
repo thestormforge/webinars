@@ -1,9 +1,17 @@
 # Karpenter and StormForge
 
-This repo is to support "Navigating Kubernetes Cost Optimization with Karpenter & StormForge"
-webinar.
+This repo is to support "Skip the Operational Overhead to Unlock Kubernetes Efficiency with AWS" and "Navigating Kubernetes Cost Optimization with Karpenter & StormForge" webinars.
 
 ## Webinars Given
+
+### March-2025
+
+[Unlock Kubernetes Efficiency with Amazon EKS Auto Mode - Demo](https://youtu.be/0fcjlHK0CdI)
+
+## Goal
+
+- Show advantages of EKS Auto Mode
+- How StormForge works in conjuction with EKS Auto Mode
 
 ### March-2024
 
